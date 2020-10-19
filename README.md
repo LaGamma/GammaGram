@@ -21,7 +21,7 @@ The following **optional** features are implemented:
 
 The following **additional** features are implemented:
 
-- [x] Password must contain a capital letter, lowercase letter, a number, and be at least 8 characters long.
+- [x] Regex to check that password contains a capital letter, lowercase letter, and number. Password also must be at least 8 characters long.
 
 ## Video Walkthrough
 
