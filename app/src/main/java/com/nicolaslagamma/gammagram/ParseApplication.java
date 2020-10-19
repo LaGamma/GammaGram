@@ -3,6 +3,7 @@ package com.nicolaslagamma.gammagram;
 import android.app.Application;
 
 import com.parse.Parse;
+import com.parse.ParseObject;
 
 public class ParseApplication extends Application {
 
@@ -10,6 +11,9 @@ public class ParseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        // Register parse models
+        ParseObject.registerSubclass(Post.class);
 
         Parse.initialize(new Parse.Configuration.Builder(this)
                 .applicationId("U5V9OK3KhXbJfroH8HxgW9nLsJz000F1W6kDqqTM")
