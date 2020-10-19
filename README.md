@@ -2,16 +2,16 @@
 
 **GammaGram** is a photo sharing app similar to Instagram but using Parse as its backend.
 
-Time spent: **X** hours spent in total
+Time spent: **10** hours spent in total
 
 ## User Stories
 
 The following **required** functionality is completed:
 
-- [ ] User can sign up to create a new account using Parse authentication.
-- [ ] User can log in and log out of his or her account.
-- [ ] The current signed in user is persisted across app restarts.
-- [ ] User can take a photo, add a caption, and post it to "Instagram".
+- [x] User can sign up to create a new account using Parse authentication.
+- [x] User can log in and log out of his or her account.
+- [x] The current signed in user is persisted across app restarts.
+- [x] User can take a photo, add a caption, and post it to "Instagram".
 
 The following **optional** features are implemented:
 
@@ -21,7 +21,7 @@ The following **optional** features are implemented:
 
 The following **additional** features are implemented:
 
-- [ ] List anything else that you can get done to improve the app functionality!
+- [x] Password must contain a capital letter, lowercase letter, a number, and be at least 8 characters long.
 
 ## Video Walkthrough
 
@@ -33,7 +33,7 @@ GIF created with [ShareX](https://getsharex.com/).
 
 ## Notes
 
-Describe any challenges encountered while building the app.
+The Android emulator seems to have issues initializing the ACTION_IMAGE_CAPTURE intent, although it works fine on my device.
 
 ## Open-source libraries used
 
