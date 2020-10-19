@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.nicolaslagamma.gammagram.MainActivity;
 import com.nicolaslagamma.gammagram.R;
+import com.parse.ParseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -34,13 +35,19 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        final ProgressBar loadingProgressBar = findViewById(R.id.loading);
+
+        // Skip LoginActivity if user has already logged in
+        if (ParseUser.getCurrentUser() != null) {
+            updateUiWithUser();
+        }
+
         loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
 
         final EditText usernameEditText = findViewById(R.id.username);
         final EditText passwordEditText = findViewById(R.id.password);
         final Button loginButton = findViewById(R.id.login);
-        final ProgressBar loadingProgressBar = findViewById(R.id.loading);
 
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
             @Override
@@ -69,12 +76,8 @@ public class LoginActivity extends AppCompatActivity {
                     showLoginFailed(loginResult.getError());
                 }
                 if (loginResult.getSuccess() != null) {
-                    updateUiWithUser(loginResult.getSuccess());
+                    updateUiWithUser();
                 }
-                setResult(Activity.RESULT_OK);
-
-                //Complete and destroy login activity once successful
-                finish();
             }
         });
 
@@ -119,12 +122,15 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void updateUiWithUser(LoggedInUserView model) {
-        String welcome = getString(R.string.welcome) + model.getDisplayName();
-        // TODO : initiate successful logged in experience
+    private void updateUiWithUser() {
+        String welcome = getString(R.string.welcome) + ParseUser.getCurrentUser().getUsername();
+        // initiate successful logged in experience
         Intent i = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(i);
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
+        setResult(Activity.RESULT_OK);
+        //Complete and destroy login activity once successful
+        finish();
     }
 
     private void showLoginFailed(@StringRes Integer errorString) {
