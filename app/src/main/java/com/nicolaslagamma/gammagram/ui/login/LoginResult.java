@@ -9,14 +9,19 @@ class LoginResult {
     @Nullable
     private String success;
     @Nullable
-    private Integer error;
+    private String verify;
+    @Nullable
+    private String error;
 
-    LoginResult(@Nullable Integer error) {
-        this.error = error;
-    }
-
-    LoginResult(@Nullable String success) {
-        this.success = success;
+    LoginResult(@Nullable String result, int success)
+    {
+        if (success == 0) {
+            this.error = result;
+        } else if (success == 1) {
+            this.verify = result;
+        } else {
+            this.success = result;
+        }
     }
 
     @Nullable
@@ -25,7 +30,12 @@ class LoginResult {
     }
 
     @Nullable
-    Integer getError() {
+    String getError() {
         return error;
+    }
+
+    @Nullable
+    String getVerify() {
+        return verify;
     }
 }

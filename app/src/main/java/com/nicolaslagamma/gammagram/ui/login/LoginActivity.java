@@ -5,11 +5,12 @@ import android.app.Activity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Editable;
@@ -38,8 +39,9 @@ public class LoginActivity extends AppCompatActivity {
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
 
         // Skip LoginActivity if user has already logged in
-        if (ParseUser.getCurrentUser() != null) {
-            updateUiWithUser();
+        ParseUser u = ParseUser.getCurrentUser();
+        if (u != null) {
+            updateUiWithUser(u.getUsername());
         }
 
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
@@ -47,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
         final EditText emailEditText = findViewById(R.id.email);
         final EditText passwordEditText = findViewById(R.id.password);
         final Button loginButton = findViewById(R.id.login);
+        final Button registerButton = findViewById(R.id.register);
 
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
             @Override
@@ -55,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
                 loginButton.setEnabled(loginFormState.isDataValid());
+                registerButton.setEnabled(loginFormState.isDataValid());
                 if (loginFormState.getEmailError() != null) {
                     emailEditText.setError(getString(loginFormState.getEmailError()));
                 }
@@ -74,8 +78,11 @@ public class LoginActivity extends AppCompatActivity {
                 if (loginResult.getError() != null) {
                     showLoginFailed(loginResult.getError());
                 }
+                if (loginResult.getVerify() != null) {
+                    showSuccessVerify(loginResult.getVerify());
+                }
                 if (loginResult.getSuccess() != null) {
-                    updateUiWithUser();
+                    updateUiWithUser(loginResult.getSuccess());
                 }
             }
         });
@@ -104,8 +111,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    loginViewModel.login(emailEditText.getText().toString(),
-                            passwordEditText.getText().toString());
+                    loginViewModel.login(emailEditText.getText().toString(), passwordEditText.getText().toString());
                 }
                 return false;
             }
@@ -115,24 +121,53 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 loadingProgressBar.setVisibility(View.VISIBLE);
-                loginViewModel.login(emailEditText.getText().toString(),
-                        passwordEditText.getText().toString());
+                loginViewModel.login(emailEditText.getText().toString(), passwordEditText.getText().toString());
+            }
+        });
+
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadingProgressBar.setVisibility(View.VISIBLE);
+                loginViewModel.createNewUser(emailEditText.getText().toString(), passwordEditText.getText().toString());
             }
         });
     }
 
-    private void updateUiWithUser() {
-        String welcome = getString(R.string.welcome) + ParseUser.getCurrentUser().getUsername();
+    private void updateUiWithUser(String user) {
+        Toast.makeText(LoginActivity.this, String.format(getString(R.string.welcome), user), Toast.LENGTH_SHORT).show();
         // initiate successful logged in experience
         Intent i = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(i);
-        Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
         setResult(Activity.RESULT_OK);
         //Complete and destroy login activity once successful
         finish();
     }
 
-    private void showLoginFailed(@StringRes Integer errorString) {
-        Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
+    private void showLoginFailed(String errorString) {
+        alertDisplayer(getString(R.string.login_failed), errorString, true);
+    }
+
+    private void showSuccessVerify(String verify) {
+        alertDisplayer(getString(R.string.account_created), verify, false);
+    }
+
+    private void alertDisplayer(String title, String message, final boolean error){
+        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        /*if(!error) {
+                            Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        }*/
+                    }
+                });
+        AlertDialog ok = builder.create();
+        ok.show();
     }
 }

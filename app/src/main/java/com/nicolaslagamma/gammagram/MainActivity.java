@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
                     public void done(ParseException e) {
                         // Move back to login screen and destroy main activity
                         Intent i = new Intent(MainActivity.this, LoginActivity.class);
-                        i.putExtra("logout", true);
                         startActivity(i);
                         setResult(Activity.RESULT_OK);
                         Toast.makeText(MainActivity.this, "Successfully logged out!", Toast.LENGTH_SHORT).show();

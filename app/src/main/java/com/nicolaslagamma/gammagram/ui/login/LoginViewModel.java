@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import android.content.Context;
 import android.util.Log;
 import android.util.Patterns;
 
@@ -42,13 +43,15 @@ public class LoginViewModel extends ViewModel {
                 if (user != null) {
                     if (user.getBoolean("emailVerified")) {
                         // Hooray! The user is logged in.
-                        loginResult.setValue(new LoginResult(email));
+                        loginResult.setValue(new LoginResult(ParseUser.getCurrentUser().getUsername(), 2));
                     } else {
-                        // User did not confirm the e-mail!! (Let them log in anyway)
-                        loginResult.setValue(new LoginResult(email));
+                        // User did not confirm the e-mail!!
+                        ParseUser.logOut();
+                        loginResult.setValue(new LoginResult("Please verify your email first.", 0));
                     }
                 } else {
-                    createNewUser(email, password);
+                    ParseUser.logOut();
+                    loginResult.setValue(new LoginResult(e.getMessage() + " Please re-try", 0));
                 }
             }
         });
@@ -66,13 +69,14 @@ public class LoginViewModel extends ViewModel {
         user.signUpInBackground(new SignUpCallback() {
             public void done(ParseException e) {
                 if (e == null) {
-                    // Hooray! Let them use the app now.
+                    // Ask to verify email before logging in
                     Log.i("LoginViewModel", "new user " + email + " created!");
-                    loginResult.setValue(new LoginResult(email));
+                    ParseUser.logOut();
+                    loginResult.setValue(new LoginResult("Please verify your email before logging in.", 1));
                 } else {
                     // Signup failed. Look at the ParseException to see what happened.
-                    Log.e("LoginViewModel", e.toString());
-                    loginResult.setValue(new LoginResult(R.string.login_failed));
+                    ParseUser.logOut();
+                    loginResult.setValue(new LoginResult("Account could not be created" + " :" + e.getMessage(), 0));
                 }
             }
         });
