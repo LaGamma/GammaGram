@@ -21,6 +21,7 @@ The following **optional** features are implemented:
 
 The following **additional** features are implemented:
 
+- [x] Checks for valid email address and sets initial username to the email substring before '@.'
 - [x] Regex to check that password contains a capital letter, lowercase letter, and number. Password also must be at least 8 characters long.
 
 ## Video Walkthrough
