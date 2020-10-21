@@ -7,12 +7,12 @@
     <string name="action_register">Register</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome "</string>
-    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_email">Not a valid email</string>
     <string name="invalid_password">Password must contain a capital letter, lowercase letter, a number and be at least 8 characters long.</string>
-    <string name="login_failed">"Invalid username/password combination"</string>
+    <string name="login_failed">"Invalid email/password combination"</string>
     <string name="log_out">Log out</string>
     <string name="take_picture">Take Picture</string>
     <string name="submit">Submit</string>
     <string name="photo_to_post">Photo To Post</string>
-    <string name="description">Description...</string>
+    <string name="description">Description…</string>
 </resources>
