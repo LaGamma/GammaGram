@@ -15,7 +15,7 @@ The following **required** functionality is completed:
 
 The following **optional** features are implemented:
 
-- [ ] User sees app icon in home screen and styled bottom navigation view
+- [x] User sees app icon in home screen and styled bottom navigation view
 - [ ] Style the feed to look like the real Instagram feed.
 - [ ] After the user submits a new post, show an indeterminate progress bar while the post is being uploaded to Parse.
 
@@ -23,6 +23,7 @@ The following **additional** features are implemented:
 
 - [x] Checks for valid email address and sets initial username to the email substring before '@.'
 - [x] Regex to check that password contains a capital letter, lowercase letter, and number. Password also must be at least 8 characters long.
+- [x] Implemented email verification system with Parse
 
 ## Video Walkthrough
 
@@ -34,7 +35,7 @@ GIF created with [ShareX](https://getsharex.com/).
 
 ## Notes
 
-The Android emulator seems to have issues initializing the ACTION_IMAGE_CAPTURE intent, although it works fine on my device.
+The Android emulator seems to have issues initializing the ACTION_IMAGE_CAPTURE intent (it actually works with the camera but curiously does not pass the (intent.resolveActivity(getPackageManager()) != null) check. It passes this check on my device, but to use it on emulator I had to just start the activity without the null pointer check.
 
 ## Open-source libraries used
 
