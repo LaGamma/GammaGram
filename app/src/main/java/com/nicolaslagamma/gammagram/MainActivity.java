@@ -4,12 +4,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.nicolaslagamma.gammagram.fragments.ComposeFragment;
+import com.nicolaslagamma.gammagram.fragments.HomeFragment;
+import com.nicolaslagamma.gammagram.fragments.ProfileFragment;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -19,6 +23,10 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
+    final FragmentManager fragmentManager = getSupportFragmentManager();
+    final Fragment composeFragment = new ComposeFragment();
+    final Fragment profileFragment = new ProfileFragment();
+    final Fragment homeFragment = new HomeFragment();
     private BottomNavigationView bottomNavigationView;
 
     @Override
@@ -35,17 +43,22 @@ public class MainActivity extends AppCompatActivity {
                 Fragment fragment;
                 switch (item.getItemId()) {
                     case R.id.action_compose:
-                        //fragment =
-                        break;
-                    case R.id.action_home:
+                        fragment = composeFragment;
                         break;
                     case R.id.action_profile:
+                        fragment = profileFragment;
+                        break;
+                    case R.id.action_home:
+                    default:
+                        fragment = homeFragment;
                         break;
                 }
-                //FragmentManager.beginTransaction().replace(R.id.)
-                return false;
+                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
+                return true;
             }
         });
+        // set default selection
+        bottomNavigationView.setSelectedItemId(R.id.action_home);
 
         //queryPosts();
     }
