@@ -6,18 +6,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.nicolaslagamma.gammagram.fragments.ComposeFragment;
-import com.nicolaslagamma.gammagram.fragments.HomeFragment;
+import com.nicolaslagamma.gammagram.fragments.PostsFragment;
 import com.nicolaslagamma.gammagram.fragments.ProfileFragment;
-import com.parse.FindCallback;
+import com.nicolaslagamma.gammagram.ui.login.LoginActivity;
+import com.parse.LogOutCallback;
 import com.parse.ParseException;
-import com.parse.ParseQuery;
-import java.util.List;
+import com.parse.ParseUser;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,17 +31,38 @@ public class MainActivity extends AppCompatActivity {
     final FragmentManager fragmentManager = getSupportFragmentManager();
     final Fragment composeFragment = new ComposeFragment();
     final Fragment profileFragment = new ProfileFragment();
-    final Fragment homeFragment = new HomeFragment();
+    final Fragment homeFragment = new PostsFragment();
     private BottomNavigationView bottomNavigationView;
+
+    private Button btnLogOut;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bottomNavigationView = findViewById(R.id.bottomNavigation);
+        btnLogOut = findViewById(R.id.btnLogOut);
+        btnLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ParseUser.logOutInBackground(new LogOutCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        // Move back to login screen and destroy main activity
+                        Intent i = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(i);
+                        setResult(Activity.RESULT_OK);
+                        Toast.makeText(MainActivity.this, "Successfully logged out!", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                });
 
+            }
+        });
+
+        bottomNavigationView = findViewById(R.id.bottomNavigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @SuppressLint("NonConstantResourceId")
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 // check id of item and perform appropriate navigation
@@ -59,30 +85,6 @@ public class MainActivity extends AppCompatActivity {
         });
         // set default selection
         bottomNavigationView.setSelectedItemId(R.id.action_home);
-
-        //queryPosts();
-    }
-
-    private void queryPosts() {
-        // Specify which class to query
-        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-        query.include(Post.KEY_USER);
-
-        // Specify the object id
-        query.findInBackground(new FindCallback<Post>() {
-            @Override
-            public void done(List<Post> posts, ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Issue with getting posts", e);
-                    return;
-                }
-
-                for (Post post: posts) {
-                    Log.i(TAG, "Post: " + post.getDescription() + ", username: " + post.getUser().getUsername());
-                }
-
-            }
-        });
     }
 
 }

@@ -3,9 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/action_profile"
-        android:icon="@mipmap/instagram_user_filled_24"
-        android:title="@string/profile"
+        android:id="@+id/action_home"
+        android:icon="@mipmap/instagram_home_filled_24"
+        android:title="@string/home"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_compose"
@@ -13,8 +13,9 @@
         android:title="@string/compose"
         app:showAsAction="always" />
     <item
-        android:id="@+id/action_home"
-        android:icon="@mipmap/instagram_home_filled_24"
-        android:title="@string/home"
+        android:id="@+id/action_profile"
+        android:icon="@mipmap/instagram_user_filled_24"
+        android:title="@string/profile"
         app:showAsAction="always" />
+
 </menu>
