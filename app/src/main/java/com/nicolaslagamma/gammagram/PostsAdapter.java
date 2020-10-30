@@ -24,7 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
 
-    private Context context;
+    private final Context context;
     private List<Post> posts;
 
     public PostsAdapter(Context context, List<Post> posts) {
@@ -63,11 +63,11 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView tvDisplayName;
-        private TextView tvDescription;
-        private ImageView ivPost;
-        private ImageView ivProfilePicture;
-        private LinearLayout container;
+        private final TextView tvDisplayName;
+        private final TextView tvDescription;
+        private final ImageView ivPost;
+        private final ImageView ivProfilePicture;
+        private final LinearLayout container;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
