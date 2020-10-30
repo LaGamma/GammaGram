@@ -13,15 +13,23 @@
         android:autofillHints="@string/description"
         android:hint="@string/description"
         android:inputType="textAutoCorrect"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/ivPost"
+        />
 
     <Button
         android:id="@+id/btnTakePicture"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/take_picture"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/btn_sign_in_background"
+        android:textColor="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,19 +40,25 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/submit"
-        app:layout_constraintEnd_toEndOf="@id/btnTakePicture"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp"
+        android:background="@drawable/btn_register_background"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivPost" />
+        app:layout_constraintTop_toBottomOf="@+id/btnTakePicture" />
 
     <ImageView
         android:id="@+id/ivPost"
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
+        android:layout_width="250dp"
+        android:layout_height="300dp"
         android:contentDescription="@string/photo_to_post"
+        android:layout_marginTop="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnTakePicture"
+        app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

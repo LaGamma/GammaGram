@@ -71,15 +71,11 @@ public class ComposeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 String description = etDescription.getText().toString();
+                ParseUser currentUser = ParseUser.getCurrentUser();
                 if (description.isEmpty()) {
                     Toast.makeText(getContext(), "Description cannot be empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (photoFile == null || ivPost.getDrawable() == null) {
-                    Toast.makeText(getContext(), "There is no image!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                ParseUser currentUser = ParseUser.getCurrentUser();
                 savePost(description, currentUser, photoFile);
             }
         });
@@ -148,7 +144,9 @@ public class ComposeFragment extends Fragment {
         Post post = new Post();
         post.setDescription(description);
         post.setUser(currentUser);
-        post.setImage(new ParseFile(photoFile));
+        if (photoFile != null) {
+            post.setImage(new ParseFile(photoFile));
+        }
         post.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -156,7 +154,7 @@ public class ComposeFragment extends Fragment {
                     Log.e(TAG, "Error saving post", e);
                     Toast.makeText(getContext(), "Error while saving!", Toast.LENGTH_SHORT).show();
                 }
-                Log.i(TAG, "Post save was successful!");
+                Toast.makeText(getContext(), "Post save was successful!", Toast.LENGTH_SHORT).show();
                 etDescription.setText("");
                 ivPost.setImageResource(0);
             }
