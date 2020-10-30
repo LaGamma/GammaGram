@@ -21,6 +21,7 @@ import com.nicolaslagamma.gammagram.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,9 +91,16 @@ public class PostsFragment extends Fragment {
     }
 
     protected void queryPosts() {
+        fetchPosts(null);
+    }
+
+    protected void fetchPosts(ParseUser targetUser) {
         // Specify which class to query
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_USER);
+        if (targetUser != null) {
+            query.whereEqualTo(Post.KEY_USER, targetUser);
+        }
         query.setLimit(20);
         query.addDescendingOrder(Post.KEY_CREATED_AT);
         // Specify the object id
