@@ -14,7 +14,7 @@
     <string name="take_picture">Take Picture</string>
     <string name="submit">Post</string>
     <string name="photo_to_post">Photo To Post</string>
-    <string name="description">Description…</string>
+    <string name="description">What\'s happening?</string>
     <string name="account_created">"Account created successfully!"</string>
     <string name="verify_email_first">"Please verify your email first."</string>
     <string name="home">Home</string>

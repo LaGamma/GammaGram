@@ -1,18 +1,24 @@
 package com.nicolaslagamma.gammagram;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.parse.ParseFile;
 
+import org.parceler.Parcels;
+
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
@@ -43,22 +49,34 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         return posts.size();
     }
 
+    // Clean all elements of the recycler
+    public void clear() {
+        posts.clear();
+        notifyDataSetChanged();
+    }
+    // Add a new list of tweets
+    public void addAll(List<Post> newPosts) {
+        posts.addAll(newPosts);
+        notifyDataSetChanged();
+    }
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tvDisplayName;
         private TextView tvDescription;
         private ImageView ivPost;
+        private LinearLayout container;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvDisplayName = itemView.findViewById(R.id.tvDisplayName);
             tvDescription = itemView.findViewById(R.id.tvDescription);
             ivPost = itemView.findViewById(R.id.ivPost);
+            container = itemView.findViewById(R.id.container);
         }
 
         // binds the post data to the view element
-        public void bind(Post post) {
+        public void bind(final Post post) {
             tvDescription.setText(post.getDescription());
             tvDisplayName.setText(post.getUser().getUsername());
             ParseFile image = post.getImage();
@@ -66,7 +84,25 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                 Glide.with(context)
                         .load(image.getUrl())
                         .into(ivPost);
+                ivPost.setVisibility(View.VISIBLE);
+            } else {
+                ivPost.setVisibility(View.GONE);
             }
+
+            // register click listener on the whole row (container)
+            container.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // navigate to a new activity on tap
+                    Intent i = new Intent(context, DetailActivity.class);
+                    // Pass data object in the bundle and populate details activity.
+                    ActivityOptionsCompat options = ActivityOptionsCompat.
+                            makeSceneTransitionAnimation((Activity) context, ivPost, "postImage");
+                    i.putExtra("post", Parcels.wrap(post));
+                    context.startActivity(i, options.toBundle());
+                }
+            });
+
         }
     }
 }

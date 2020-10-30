@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp"
+    android:background="@color/dark_navy"
     android:orientation="vertical">
-
-
 
     <TextView
         android:id="@+id/tvDisplayName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        android:textColor="@color/light_gray"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        tools:layout_editor_absoluteX="89dp"
-        tools:layout_editor_absoluteY="70dp"
         tools:text="nplagamma" />
 
     <ImageView
         android:id="@+id/ivPost"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:contentDescription="sample description"
+        android:layout_marginBottom="3dp"
+        android:contentDescription="@string/photo_to_post"
         android:scaleType="centerCrop"
-        tools:layout_editor_absoluteX="54dp"
-        tools:layout_editor_absoluteY="176dp"
+        android:visibility="visible"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
@@ -31,7 +33,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        tools:layout_editor_absoluteX="146dp"
-        tools:layout_editor_absoluteY="382dp"
+        android:textColor="@color/light_gray"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         tools:text="This is a test post!!!" />
+
 </LinearLayout>

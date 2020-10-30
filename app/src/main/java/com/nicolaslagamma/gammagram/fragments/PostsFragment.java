@@ -4,7 +4,9 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -25,6 +27,7 @@ import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PostsFragment extends Fragment {
 
@@ -61,8 +64,8 @@ public class PostsFragment extends Fragment {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Log.i(TAG, "fetching new data!");
-                queryPosts();
+                Log.i(TAG, "fetching data!");
+                queryPosts(false);
             }
         });
 
@@ -76,30 +79,36 @@ public class PostsFragment extends Fragment {
         // 4. set the layout manager on the recycler view
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvPosts.setLayoutManager(layoutManager);
+        DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(rvPosts.getContext(), layoutManager.getOrientation());
+        mDividerItemDecoration.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(rvPosts.getContext(), R.drawable.divider)));
+        rvPosts.addItemDecoration(mDividerItemDecoration);
 
         EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 Log.i(TAG, "onLoadMore: " + page);
-                queryPosts();
+                queryPosts(true);
             }
         };
         // Adds a scroll listener to RecyclerView
         rvPosts.addOnScrollListener(scrollListener);
 
-        queryPosts();
+        queryPosts(false);
     }
 
-    protected void queryPosts() {
-        fetchPosts(null);
+    protected void queryPosts(boolean more) {
+        fetchPosts(null, more);
     }
 
-    protected void fetchPosts(ParseUser targetUser) {
+    protected void fetchPosts(ParseUser targetUser, final boolean more) {
         // Specify which class to query
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_USER);
         if (targetUser != null) {
             query.whereEqualTo(Post.KEY_USER, targetUser);
+        }
+        if (more) {
+            query.whereLessThan(Post.KEY_CREATED_AT, allPosts.get(allPosts.size() - 1).getCreatedAt());
         }
         query.setLimit(20);
         query.addDescendingOrder(Post.KEY_CREATED_AT);
@@ -114,8 +123,10 @@ public class PostsFragment extends Fragment {
                 for (Post post: posts) {
                     Log.i(TAG, "Post: " + post.getDescription() + ", username: " + post.getUser().getUsername());
                 }
-                allPosts.addAll(posts);
-                adapter.notifyDataSetChanged();
+                if (!more) {
+                    adapter.clear();
+                }
+                adapter.addAll(posts);
                 // signal refresh has finished
                 swipeContainer.setRefreshing(false);
             }
