@@ -14,6 +14,7 @@
 
             <ImageView
                 android:id="@+id/ivProfilePicture"
+                android:transitionName="profilePicture"
                 android:layout_width="28sp"
                 android:layout_height="28sp"
                 android:background="@color/light_gray"
@@ -29,7 +30,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
-                android:transitionName="displayName"
                 android:layout_toEndOf="@id/ivProfilePicture"
                 android:textColor="@color/light_gray"
                 android:textSize="26sp"

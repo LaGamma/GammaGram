@@ -19,6 +19,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.util.Pair;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
@@ -65,7 +66,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         private TextView tvDisplayName;
         private TextView tvDescription;
         private ImageView ivPost;
-        private ImageView ivProfileImage;
+        private ImageView ivProfilePicture;
         private LinearLayout container;
 
         public ViewHolder(@NonNull View itemView) {
@@ -73,7 +74,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             tvDisplayName = itemView.findViewById(R.id.tvDisplayName);
             tvDescription = itemView.findViewById(R.id.tvDescription);
             ivPost = itemView.findViewById(R.id.ivPost);
-            ivProfileImage = itemView.findViewById(R.id.ivProfilePicture);
+            ivProfilePicture = itemView.findViewById(R.id.ivProfilePicture);
             container = itemView.findViewById(R.id.container);
         }
 
@@ -85,7 +86,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             // TODO: swap out for post.getUser().getProfileImage() later
             Glide.with(context)
                     .load(R.mipmap.instagram_user_filled_24)
-                    .into(ivProfileImage);
+                    .into(ivProfilePicture);
 
             final ParseFile image = post.getImage();
             if (image != null) {
@@ -105,11 +106,13 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                     Intent i = new Intent(context, DetailActivity.class);
                     // Pass data object in the bundle and populate details activity.
                     i.putExtra("post", Parcels.wrap(post));
+                    Pair<View, String> profilePicture = Pair.create((View)ivProfilePicture, "profilePicture");
                     ActivityOptionsCompat options;
                     if (image != null) {
-                        options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, ivPost, "postImage");
+                        Pair<View, String> postImage = Pair.create((View)ivPost, "postImage");
+                        options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, profilePicture, postImage);
                     } else {
-                        options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, tvDisplayName, "displayName");
+                        options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, profilePicture);
                     }
                     context.startActivity(i, options.toBundle());
                 }
