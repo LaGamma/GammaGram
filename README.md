@@ -2,7 +2,7 @@
 
 **GammaGram** is a photo sharing app similar to Instagram but using Parse as its backend.
 
-Time spent: **10+X** hours spent in total
+Time spent: **10+10** hours spent in total
 
 ## User Stories
 
