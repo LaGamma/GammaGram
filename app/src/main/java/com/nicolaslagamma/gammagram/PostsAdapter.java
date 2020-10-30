@@ -65,6 +65,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         private TextView tvDisplayName;
         private TextView tvDescription;
         private ImageView ivPost;
+        private ImageView ivProfileImage;
         private LinearLayout container;
 
         public ViewHolder(@NonNull View itemView) {
@@ -72,6 +73,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             tvDisplayName = itemView.findViewById(R.id.tvDisplayName);
             tvDescription = itemView.findViewById(R.id.tvDescription);
             ivPost = itemView.findViewById(R.id.ivPost);
+            ivProfileImage = itemView.findViewById(R.id.ivProfilePicture);
             container = itemView.findViewById(R.id.container);
         }
 
@@ -79,7 +81,13 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         public void bind(final Post post) {
             tvDescription.setText(post.getDescription());
             tvDisplayName.setText(post.getUser().getUsername());
-            ParseFile image = post.getImage();
+
+            // TODO: swap out for post.getUser().getProfileImage() later
+            Glide.with(context)
+                    .load(R.mipmap.instagram_user_filled_24)
+                    .into(ivProfileImage);
+
+            final ParseFile image = post.getImage();
             if (image != null) {
                 Glide.with(context)
                         .load(image.getUrl())
@@ -96,9 +104,13 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                     // navigate to a new activity on tap
                     Intent i = new Intent(context, DetailActivity.class);
                     // Pass data object in the bundle and populate details activity.
-                    ActivityOptionsCompat options = ActivityOptionsCompat.
-                            makeSceneTransitionAnimation((Activity) context, ivPost, "postImage");
                     i.putExtra("post", Parcels.wrap(post));
+                    ActivityOptionsCompat options;
+                    if (image != null) {
+                        options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, ivPost, "postImage");
+                    } else {
+                        options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, tvDisplayName, "displayName");
+                    }
                     context.startActivity(i, options.toBundle());
                 }
             });
