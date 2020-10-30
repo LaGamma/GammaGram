@@ -1,24 +1,11 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here.-->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
     </style>
-
-    <style name="AppTheme.ButtonLogin" parent="Widget.AppCompat.Button.Colored">
-        <item name="android:colorButtonNormal">@color/colorAccent</item>
-        <item name="android:textColor">@color/colorPrimary</item>
-    </style>
-
-    <style name="AppTheme.ButtonRegister" parent="Widget.AppCompat.Button.Colored">
-        <item name="android:colorButtonNormal">@color/colorPrimary</item>
-        <item name="android:textColor">@color/colorAccent</item>
-        <item name="android:disabledAlpha">10</item>
-    </style>
-
-
 
 </resources>
