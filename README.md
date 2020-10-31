@@ -35,9 +35,11 @@ The following **additional** features are implemented:
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
+
 <img src='walkthrough6.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 From week 1:
+
 <img src='walkthrough5.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIFs created with [ShareX](https://getsharex.com/).
