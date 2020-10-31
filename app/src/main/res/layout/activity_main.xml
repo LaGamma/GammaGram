@@ -16,7 +16,8 @@
         android:background="@color/cardview_light_background"
         app:menu="@menu/top_main_menu">
         <ImageView
-            android:id="@+id/logoXmarks"
+            android:id="@+id/logo"
+            android:transitionName="logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="20dp"
